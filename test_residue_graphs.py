@@ -222,45 +222,48 @@ if __name__ == "__main__":
 
     ########################
 
-    k = 1  # Define the number of hops
+    # k = 1  # Define the number of hops
 
-    # Step 1: Extract main sequence and features
-    total_sequence = ""
-    feature_vectors = []
-    node_list = []  # Maintain order of original nodes
+    # # Step 1: Extract main sequence and features
+    # total_sequence = ""
+    # feature_vectors = []
+    # node_list = []  # Maintain order of original nodes
 
-    for node in graph.nodes():
-        node_id = node.split(":")[1]  # Extract amino acid ID
-        letter = AA_DICT[node_id]  # Convert to amino acid
-        total_sequence += letter
-        node_list.append(node)  # Maintain order
+    # for node in graph.nodes():
+    #     node_id = node.split(":")[1]  # Extract amino acid ID
+    #     letter = AA_DICT[node_id]  # Convert to amino acid
+    #     total_sequence += letter
+    #     node_list.append(node)  # Maintain order
 
-    # Step 2: Find start index of the subsequence
-    index = total_sequence.find(site_sequence)
-    if index == -1:
-        print(f"Site sequence '{site_sequence}' not found in protein sequence {sub_id}.")
-        indexed_edges = [[], []]  # No edges
+    # # Step 2: Find start index of the subsequence
+    # index = total_sequence.find(site_sequence)
+    # if index == -1:
+    #     print(f"Site sequence '{site_sequence}' not found in protein sequence {sub_id}.")
+    #     indexed_edges = [[], []]  # No edges
 
-    # Step 3: Extract the relevant nodes and features
-    selected_nodes = node_list[index : index + len(site_sequence)]
+    # # Step 3: Extract the relevant nodes and features
+    # selected_nodes = node_list[index : index + len(site_sequence)]
 
-    # Step 4: Find k-hop neighbors
-    node_to_k_hop_neighbors = {
-        node: set(nx.single_source_shortest_path_length(graph, node, cutoff=k).keys())
-        for node in selected_nodes
-    }
+    # # Step 4: Find k-hop neighbors
+    # node_to_k_hop_neighbors = {
+    #     node: set(nx.single_source_shortest_path_length(graph, node, cutoff=k).keys())
+    #     for node in selected_nodes
+    # }
 
-    # Step 5: Find shared k-hop neighbors and add edges between selected nodes
-    subgraph = nx.Graph()  # Use nx.DiGraph() if the original graph is directed
-    subgraph.add_nodes_from(selected_nodes)  # Only add selected nodes
+    # # Step 5: Find shared k-hop neighbors and add edges between selected nodes
+    # subgraph = nx.Graph()  # Use nx.DiGraph() if the original graph is directed
+    # subgraph.add_nodes_from(selected_nodes)  # Only add selected nodes
 
-    for node1, node2 in itertools.combinations(selected_nodes, 2):
-        shared_neighbors = node_to_k_hop_neighbors[node1] & node_to_k_hop_neighbors[node2]
-        if shared_neighbors:  # If they share at least one k-hop neighbor
-            subgraph.add_edge(node1, node2)  # Add an edge
+    # for node1, node2 in itertools.combinations(selected_nodes, 2):
+    #     shared_neighbors = node_to_k_hop_neighbors[node1] & node_to_k_hop_neighbors[node2]
+    #     if shared_neighbors:  # If they share at least one k-hop neighbor
+    #         subgraph.add_edge(node1, node2)  # Add an edge
 
-    # Debugging outputs (optional)
-    print("Subgraph nodes:", len(subgraph.nodes(data=True)))
-    print("Subgraph edges:", len(subgraph.edges()))
-    print("Graph nodes:", len(graph.nodes(data=True)))
-    print("Graph edges:", len(graph.edges()))
+    # # Debugging outputs (optional)
+    # print("Subgraph nodes:", len(subgraph.nodes(data=True)))
+    # print("Subgraph edges:", len(subgraph.edges()))
+    # print("Graph nodes:", len(graph.nodes(data=True)))
+    # print("Graph edges:", len(graph.edges()))
+
+####################################################################
+

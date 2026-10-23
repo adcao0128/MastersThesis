@@ -1,2 +1,53 @@
 /alphafold_pdb_files
 /residue_embeddings
+/test_phosphormer
+/cdhit
+
+# Python
+__pycache__/
+*.pyc
+
+# Slurm outputs & logs
+*.log
+*.o[0-9]*
+
+# Result/data directories (checkpoints, splits, plots)
+/GPS/
+/backbone/
+/backbone_result/
+/balanced_pspa_testing/
+/balanced_pspa_testing_2/
+/balanced_pspa_testing_2_psp/
+/balanced_pspa_testing_result/
+/final_testing/
+/final_testing_result/
+/khop_structure_backbone/
+/khop_structure_backbone_result/
+/ncv_khop_structure_backbone/
+/structure_backbone/
+/structure_backbone_result/
+/test_khop_structure_backbone/
+/test_khop_structure_backbone_result/
+/read_stats/
+
+# Large datasets (regenerable / too big for GitHub)
+/all_labeled_kinase_peptide_pairs.csv
+/all_labeled_kinase_peptide_pairs_balanced.csv
+/easy_negative_pairs_unique_clusters.csv
+/easy_negatives.csv
+/easy_negatives_with_clusters.csv
+/hard_negatives.csv
+/negative_kinase_site_pairs.csv
+/positive_kinase_site_pairs.csv
+/unique_negative_cluster_pairs.csv
+/unique_positive_cluster_pairs.csv
+/cleaned_pspa_filtered_balanced_dataset.csv
+/pspa_all_labeled_kinase_peptide_pairs.csv
+/pspa_filtered_balanced_dataset.csv
+/PSPA_ST.csv
+/PSPA_ST_with_clusters.csv
+
+# Misc generated files
+/filtered70
+/filtered70.clstr
+/train_

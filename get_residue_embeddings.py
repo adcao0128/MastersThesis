@@ -42,7 +42,7 @@ print(torch.__version__)
 
 def pdb_to_fasta(pdb_file_path: Path, main_fasta_fh: TextIOWrapper) -> None:
     """Convert a PDB file with a single protein to a FASTA file."""
-    log.info(f"Reading sequence of PDB {pdb_file_path.name}")
+    print(f"Reading sequence of PDB {pdb_file_path.name}")
     parser = PDBParser()
     structure = parser.get_structure("structure", pdb_file_path)
 
@@ -71,13 +71,13 @@ def get_embedding(fasta_file: Path, output_dir: Path) -> None:
 
     Adapted from: <https://github.com/facebookresearch/esm/blob/d7b3331f41442ed4ffde70cb95bdd48cabcec2e9/scripts/extract.py#L63>
     """
-    log.info("Generating embedding for protein sequence.")
+    print("Generating embedding for protein sequence.")
     model, alphabet = pretrained.load_model_and_alphabet(ESM_MODEL)
     model.eval()
 
     if torch.cuda.is_available():
         model = model.cuda()
-        log.info("Transferred model to GPU")
+        print("Transferred model to GPU")
 
     dataset = FastaBatchedDataset.from_file(fasta_file)
     batches = dataset.get_batch_indices(TOKS_PER_BATCH, extra_toks_per_seq=1)
@@ -86,7 +86,7 @@ def get_embedding(fasta_file: Path, output_dir: Path) -> None:
         collate_fn=alphabet.get_batch_converter(TRUNCATION_SEQ_LENGTH),
         batch_sampler=batches,
     )
-    log.info(f"Read {fasta_file} with {len(dataset)} sequences")
+    print(f"Read {fasta_file} with {len(dataset)} sequences")
 
     output_dir.mkdir(parents=True, exist_ok=True)
     return_contacts = "contacts" in INCLUDE
@@ -96,7 +96,7 @@ def get_embedding(fasta_file: Path, output_dir: Path) -> None:
 
     with torch.no_grad():
         for batch_idx, (labels, strs, toks) in enumerate(data_loader):
-            log.info(
+            print(
                 f"Processing {batch_idx + 1} of {len(batches)} batches ({toks.size(0)} sequences)"
             )
             if torch.cuda.is_available():
@@ -147,15 +147,15 @@ def process_all_pdb_files_in_folder(pdb_folder_path: Path, output_dir: Path) -> 
             # Convert PDB to FASTA and append to the combined FASTA file
             pdb_to_fasta(pdb_file_path, main_fasta_fh)
 
-    log.info("Generating embeddings from the combined FASTA file.")
+    print("Generating embeddings from the combined FASTA file.")
     get_embedding(combined_fasta_file, output_dir)
 
 if __name__ == "__main__":
     pdb_folder_path = Path("./alphafold_pdb_files")
     output_dir = Path("./residue_embeddings")
-    log.info("Starting processing")
+    print("Starting processing")
     process_all_pdb_files_in_folder(pdb_folder_path, output_dir)
-    #log.info("Generating embeddings from the combined FASTA file.")
+    #print("Generating embeddings from the combined FASTA file.")
     #combined_fasta_file = output_dir / "combined_sequences.fasta"
     # get_embedding(combined_fasta_file, output_dir)
 
